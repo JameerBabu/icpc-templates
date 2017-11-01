@@ -1,0 +1,42 @@
+ class Graph {
+    int V;    
+    vi *adj;
+    int DFSUtil(int v, bool visited[], int inTimes[], int outTimes[], int time);
+public:
+    Graph(int V); 
+    void addEdge(int v, int w); 
+    void DFS();
+};
+ 
+Graph::Graph(int V) {
+    this->V = V;
+    adj = vi[V];
+}
+ 
+void Graph::addEdge(int v, int w) {
+    adj[v].push_back(w); 
+}
+ 
+int Graph::DFSUtil(int v, bool visited[], int inTimes[], int outTimes[], int time) {
+    visited[v] = true;
+    inTimes[v] = time;
+    vi::iterator i;
+    for(i = adj[v].begin(); i != adj[v].end(); ++i)
+        if(!visited[*i])
+            time = DFSUtil(*i, visited, inTimes, outTimes, time+1);
+    outTimes[v] = time + 1;
+    return (time + 1);
+}
+void Graph::DFS() {
+    bool *visited = new bool[V];
+    int *inTimes = new int[V];
+    int *outTimes = new int[V];
+    for (int i = 0; i < V; i++){
+        visited[i] = false;
+        inTimes[i] = 0;
+        outTimes[i] = 0;
+    }
+    for (int i = 0; i < V; i++)
+        if (visited[i] == false)
+            DFSUtil(i, visited, inTimes, outTimes, 0);
+}
